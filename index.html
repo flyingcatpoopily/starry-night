@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starry Night Message</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('apple.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #sky {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Star Styling */
+        .star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0.7));
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: sparkle 2s infinite ease-in-out;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Twinkling Stars Effect (Brighter) */
+        .twinkle {
+            animation: twinkle 1s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1; /* Brighter stars */
+                transform: scale(1.1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Hover Message Styling */
+        .star:hover::after {
+            content: attr(data-message);
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            color: #fff;
+        }
+
+        /* Moon Styling - Using moon.png image */
+        .moon {
+            position: absolute;
+            top: 10%;
+            left: 0%;
+            width: 120px;
+            height: 120px;
+            background-image: url('moon.png'); /* Using your moon image */
+            background-size: cover;
+            animation: moonMove 15s linear infinite, moonRotation 10s linear infinite;
+            transform-origin: center center; /* Spin around its own center */
+        }
+
+        /* Horizontal Movement (Top) */
+        @keyframes moonMove {
+            0% {
+                left: -120px; /* Start off-screen */
+            }
+            50% {
+                left: 50%; /* Center the moon horizontally */
+                transform: translateX(-50%);
+            }
+            100% {
+                left: 100%; /* End off-screen */
+            }
+        }
+
+        /* Moon Self-Rotation Animation */
+        @keyframes moonRotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Shooting Star Animation (Diagonal Movement) */
+        @keyframes shootStar {
+            0% {
+                left: -10%;
+                top: 30%;
+                transform: rotate(0deg);
+                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
+            }
+            25% {
+                left: 25%;
+                top: 40%;
+                transform: rotate(45deg);
+                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
+            }
+            50% {
+                left: 50%;
+                top: 50%;
+                transform: rotate(90deg);
+                box-shadow: 0 0 20px 15px rgba(255, 255, 255, 0.8);
+            }
+            75% {
+                left: 75%;
+                top: 60%;
+                transform: rotate(135deg);
+                box-shadow: 0 0 20px 20px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                left: 110%;
+                top: 70%;
+                transform: rotate(180deg);
+                box-shadow: 0 0 20px 30px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .shooting-star {
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0.8));
+            box-shadow: 0 0 30px #fff;
+            animation: shootStar 2s linear infinite;
+            position: absolute;
+            border-radius: 50%;
+            top: 30%;
+            animation-delay: 2s; /* delay for visual appeal */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="sky"></div>
+    <div class="moon"></div>
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="space-ambient-sound.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        const messages = [
+          "You're the brightest star. ✨",
+            "I love you to the moon and back. 🌙",
+            "skibidi gyat🌌",
+            "i fw u heavy 🌟",
+            "Even when we’re apart, we share the same sky. 💫",
+            "You're the sun to my solar system. ☀️",
+            "Type splishhh 🌠",
+            "You're my universe. 💖",
+            "No telescope can capture how amazing you are. 🔭",
+            "I love u dawg ♾️",
+            "Imma touch u 😏 🌌",
+            "I orbit around you like a planet to its sun. 🪐",
+            "You're my North Star, guiding me always. ⭐",
+            "I love your smile. 🌟"
+        ];
+
+        const sky = document.getElementById('sky');
+        const numStars = 50;
+
+        // Create background stars
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = Math.random() * 100 + "%";
+            star.style.top = Math.random() * 100 + "%";
+            star.setAttribute('data-message', messages[Math.floor(Math.random() * messages.length)]);
+            sky.appendChild(star);
+        }
+
+        // Create one shooting star
+        const shootingStar = document.createElement('div');
+        shootingStar.classList.add('shooting-star');
+        shootingStar.style.animationDelay = Math.random() * 5 + "s";
+        sky.appendChild(shootingStar);
+
+        // Add twinkling effect to stars
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => star.classList.add('twinkle'));
+
+        // Play background music
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.volume = 0.3; // Adjust volume as needed
+
+    </script>
+</body>
+</html>
